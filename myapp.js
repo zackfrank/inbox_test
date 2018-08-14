@@ -10,7 +10,8 @@ InboxSDK.load(2, 'sdk_zfrank_c53eae5345').then(function(sdk){
       onClick: function(event) {
         event.threadRowView.getThreadIDAsync().then(function(threadID){
           console.log(threadID);
-        });
+          sdk.Compose.openNewComposeView();
+        }.bind(this));
       },
     });
 
