@@ -1,0 +1,1 @@
+Document.getElementsByClassName("T-Jo-auh").onClick
