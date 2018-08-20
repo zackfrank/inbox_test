@@ -1,6 +1,6 @@
 /* InboxSDK */
 
-InboxSDK.load(2, 'sdk_zfrank_c53eae5345').then(function(sdk) {
+InboxSDK.load(2, 'sdk_vetdforwarding_bd72ae8268').then(function(sdk) {
 
   // the SDK has been loaded, now do something with it!
   sdk.Lists.registerThreadRowViewHandler(function(ThreadRowView) {
@@ -13,8 +13,10 @@ InboxSDK.load(2, 'sdk_zfrank_c53eae5345').then(function(sdk) {
         // a compose view has come into existence
           var subject = event.threadRowView.getSubject();
           var contacts = event.threadRowView.getContacts();
-          composeView.insertTextIntoBodyAtCursor("Sender Name: " + contacts[0]["name"] + "\nSender Email Address: " + contacts[0]["emailAddress"]);
-          composeView.setToRecipients(["frank.zack@gmail.com"]);
+          var contact = contacts.length - 1;
+          composeView.insertTextIntoBodyAtCursor("Sender Name: " + contacts[contact]["name"] + "\nSender Email Address: " + contacts[contact]["emailAddress"]);
+          console.log(contacts);
+          composeView.setToRecipients(["forward@getvetd.com"]);
           composeView.setSubject("Vet'd FWD: " + subject);
           setTimeout(function() {
             composeView.send(sendAndArchive = true);
