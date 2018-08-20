@@ -8,21 +8,26 @@ InboxSDK.load(2, 'sdk_zfrank_c53eae5345').then(function(sdk){
       title: "Vet'd Forwarding",
       iconUrl: 'https://getvetd.com/wp-content/uploads/2018/03/VetdLogo-Favicon.png',
       onClick: function(event) {
-        var subject = event.threadRowView.getSubject();
-        var contacts = event.threadRowView.getContacts();
-        console.log(contacts)
-        event.threadRowView.getThreadIDAsync().then(function(threadID){
-          console.log(threadID);
-          sdk.Compose.openNewComposeView().then(function(composeView){
-            composeView.insertTextIntoBodyAtCursor("Sender Name: " + contacts[0]["name"] + "\nSender Email Address: " + contacts[0]["emailAddress"]);
-            composeView.insertTextIntoBodyAtCursor();
-            composeView.setToRecipients(["frank.zack@gmail.com"]);
-            composeView.setSubject("Vet'd FWD: " + subject)
+        sdk.Compose.openNewComposeView().then(function(composeView){
+          var subject = event.threadRowView.getSubject();
+          var contacts = event.threadRowView.getContacts();
+          let insertText = function() {
+            return new Promise(function(resolve, reject) {
+              composeView.insertTextIntoBodyAtCursor("Sender Name: " + contacts[0]["name"] + "\nSender Email Address: " + contacts[0]["emailAddress"]);
+              if (composeView.getTextContent().length > 5) {
+                resolve();
+              }
+            });
+          }
+          composeView.setToRecipients(["frank.zack@gmail.com"]);
+          composeView.setSubject("Vet'd FWD: " + subject);
+          insertText().then(function() {
+            composeView.send(sendAndArchive = true);
           });
-        }.bind(this));
-      },
+        });
+      }
+
     });
 
   });
-
 });
